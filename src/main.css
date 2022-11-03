@@ -1,0 +1,40 @@
+@import "../node_modules/reset-css/reset.css";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --font-family: 'Poppins', sans-serif;
+  --text-color: #f9f9fb;
+  --bg-color: #282b30;
+  
+  /* Game Configurations */
+  --game-board-col-size: 64px;
+  --game-board-background-color: #bfb9a3;
+  --game-board-col-background-color: #989482;
+
+  --game-keyboard-button-background-color: #989482;
+  --game-keyboard-button-hover-background-color: #bfb9a3;
+
+}
+
+/* @media (prefers-color-scheme: light) {
+  :root {
+
+  }
+} */
+
+body {
+  font-size: 1rem;
+  font-family: var(--font-family);
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
