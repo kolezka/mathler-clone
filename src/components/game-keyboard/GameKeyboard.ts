@@ -1,4 +1,4 @@
-import { GameEvents, EGameEvents } from "../../game";
+import { EGameEvents } from "../../game";
 
 const template = document.createElement("template");
 
