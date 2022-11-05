@@ -77,8 +77,6 @@ function onAdd(e: Event) {
   update();
 }
 
-window.addEventListener(EGameEvents.ADD, onAdd);
-
 /*
  *   Step back action
  */
@@ -91,8 +89,6 @@ function onDelete() {
 
   update();
 }
-
-window.addEventListener(EGameEvents.DELETE, onDelete);
 
 /*
  *   Validate currentRow user guess
@@ -128,4 +124,12 @@ function onEnter() {
   update();
 }
 
+window.addEventListener(EGameEvents.ADD, onAdd);
+window.addEventListener(EGameEvents.DELETE, onDelete);
 window.addEventListener(EGameEvents.ENTER, onEnter);
+
+// export function init() {
+//   window.addEventListener(EGameEvents.ADD, onAdd);
+//   window.addEventListener(EGameEvents.DELETE, onDelete);
+//   window.addEventListener(EGameEvents.ENTER, onEnter);
+// }

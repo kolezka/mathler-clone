@@ -1,0 +1,50 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  --game-board-col-size: 32px;
+  --game-board-background-color: #bfb9a3;
+  --game-board-col-background-color: #989482;
+
+  --game-board-result-correct: #008744;
+  --game-board-result-different-place: #ffa700;
+  --game-board-result-not-in-solution: #787878;
+
+  --game-keyboard-button-background-color: #989482;
+  --game-keyboard-button-hover-background-color: #bfb9a3;
+
+  --game-notification-background-color: #787878;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}

@@ -1,4 +1,15 @@
 /** @type {import('vite').UserConfig} */
-const config = {};
+const config = {
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: "[name].js",
+      },
+    },
+    // rollupOptions: {
+    //
+    // }
+  },
+};
 
 export default config;

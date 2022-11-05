@@ -1,5 +1,4 @@
 {
-  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.js",
@@ -14,5 +13,22 @@
   },
   "dependencies": {
     "reset-css": "^5.0.1"
-  }
+  },
+  "name": "math-wordle",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kolezka/mathematica.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kolezka/mathematica/issues"
+  },
+  "homepage": "https://github.com/kolezka/mathematica#readme",
+  "description": ""
 }
