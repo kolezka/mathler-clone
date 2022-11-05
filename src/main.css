@@ -11,7 +11,7 @@
   --bg-color: #282b30;
 
   /* Game Configurations */
-  --game-board-col-size: 64px;
+  --game-board-col-size: 32px;
   --game-board-background-color: #bfb9a3;
   --game-board-col-background-color: #989482;
 
@@ -21,6 +21,8 @@
 
   --game-keyboard-button-background-color: #989482;
   --game-keyboard-button-hover-background-color: #bfb9a3;
+
+  --game-notification-background-color: #787878;
 }
 
 /* @media (prefers-color-scheme: light) {
@@ -37,7 +39,21 @@ body {
 }
 
 .container {
-  max-width: 1280px;
+  position: relative;
+  max-width: 320px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 16px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 16px;
+}
+
+game-board#game-board {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 16px;
 }

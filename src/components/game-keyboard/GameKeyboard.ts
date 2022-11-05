@@ -26,6 +26,11 @@ template.innerHTML = `
     button:hover {
       background-color: var(--game-keyboard-button-hover-background-color);
     }
+
+    button:active {
+      transform: scale(.9);
+    }
+
   </style>
   <div id="keyboard">
     <div>
@@ -41,12 +46,12 @@ template.innerHTML = `
       <button data-value="9">9</button>
     </div>
     <div>
-      <button data-action="Enter">Enter</button>
-      <button data-action="Delete">Delete</button>
       <button data-value="+">+</button>
       <button data-value="-">-</button>
       <button data-value="*">*</button>
       <button data-value="/">/</button>
+      <button style="margin-left: auto;" data-action="Enter">Enter</button>
+      <button data-action="Delete">Delete</button>
     </div>
   </div>
 `;
@@ -59,7 +64,7 @@ export class GameKeyboard extends HTMLElement {
 
   onButtonClick() {}
 
-  bindEvents() {
+  bindButtonsEvents() {
     const buttons = this.shadowRoot?.querySelectorAll("button");
     if (buttons) {
       for (const button of Array.from(buttons)) {
@@ -84,9 +89,24 @@ export class GameKeyboard extends HTMLElement {
     }
   }
 
+  bindKeyboardEvents() {
+    window.addEventListener("keydown", (e) => {
+      if (!isNaN(Number(e.key)) || ["*", "/", "+", "-"].includes(e.key)) {
+        window.dispatchEvent(
+          new CustomEvent(EGameEvents.ADD, { detail: String(e.key) })
+        );
+      } else if (e.key === "Enter") {
+        window.dispatchEvent(new CustomEvent(EGameEvents.ENTER));
+      } else if (e.key === "Backspace") {
+        window.dispatchEvent(new CustomEvent(EGameEvents.DELETE));
+      }
+    });
+  }
+
   connectedCallback() {
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.bindEvents();
+    this.bindButtonsEvents();
+    this.bindKeyboardEvents();
   }
 }
 

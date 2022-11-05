@@ -40,11 +40,11 @@ template.innerHTML = `
     .row {
       display: flex;
       height: var(--game-board-col-size);
-      margin: 1px 0;
+      margin: 2px 0;
     }
 
     .col {
-      margin: 0 1px;
+      margin: 0 2px;
       text-align: center;
       width: var(--game-board-col-size);
       height: var(--game-board-col-size);
@@ -55,7 +55,7 @@ template.innerHTML = `
       display: block;
       animation: appear .5s forwards;
       line-height: var(--game-board-col-size);
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 700;
     }
 
@@ -127,7 +127,7 @@ export class GameBoard extends HTMLElement {
         // Add value
         if (!valueElement && value) {
           const valueElement = document.createElement("span");
-          valueElement.innerText = value;
+          valueElement.innerText = String(value);
           valueElement.classList.add("value");
           element?.appendChild(valueElement);
         }

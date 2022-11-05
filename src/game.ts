@@ -11,13 +11,14 @@ const mathRegex = new RegExp(
   /^((?:(?:^|[-+_*/])(?:\s*-?\d+(\.\d+)?(?:[eE][+-]?\d+)?\s*))+$)/
 );
 
-let currentCol = 6;
+let currentCol = 0;
 let currentRow = 0;
 
 const expectedResult = "8/4+11";
 
 const guesses: (string | null)[][] = [
-  ["1", "1", "+", "8", "/", "4"],
+  // ["1", "1", "+", "8", "/", "4"],
+  [],
   [],
   [],
   [],
@@ -37,6 +38,8 @@ function update() {
 
 function onAdd(e: Event) {
   const { detail } = e as CustomEvent;
+
+  console.log(detail);
 
   if (currentCol >= 6) return;
 
@@ -61,21 +64,6 @@ function onDelete() {
 
 window.addEventListener(EGameEvents.DELETE, onDelete);
 
-function applyCurrentGuessesResults() {
-  const expression = guesses[currentRow];
-  guessesResults[currentRow] = (expression as string[]).map((char, index) => {
-    if (char === expectedResult[index]) {
-      return GuessResultType.CORRECT;
-    }
-    if (expectedResult.includes(char)) {
-      return GuessResultType.DIFFERENT_PLACE;
-    }
-    return GuessResultType.NOT_IN_SOLUTION;
-  });
-}
-
-function fail() {}
-
 function onEnter(e: any) {
   const expression = guesses[currentRow].join("");
   const isMathExpression = mathRegex.test(expression);
@@ -94,6 +82,11 @@ function onEnter(e: any) {
     // Apply current row results
     applyCurrentGuessesResults();
 
+    const currentRowGuessValid = guessesResults[currentRow].every(
+      (guess) => guess === GuessResultType.CORRECT
+    );
+    console.log(currentRowGuessValid);
+
     // Go to next row
     currentRow += 1;
     currentCol = 0;
@@ -103,3 +96,16 @@ function onEnter(e: any) {
 }
 
 window.addEventListener(EGameEvents.ENTER, onEnter);
+
+function applyCurrentGuessesResults() {
+  const expression = guesses[currentRow];
+  guessesResults[currentRow] = (expression as string[]).map((char, index) => {
+    if (char === expectedResult[index]) {
+      return GuessResultType.CORRECT;
+    }
+    if (expectedResult.includes(char)) {
+      return GuessResultType.DIFFERENT_PLACE;
+    }
+    return GuessResultType.NOT_IN_SOLUTION;
+  });
+}
