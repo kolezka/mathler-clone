@@ -7,7 +7,22 @@ const mathRegex = new RegExp(
 );
 
 export function isMathExpression(str: string) {
-  // In our game math expression cannot start with + or -
-  if (str.startsWith("-") || str.startsWith("+")) return false;
+  if (
+    str.startsWith("-") ||
+    str.startsWith("+") ||
+    str.startsWith("*") ||
+    str.startsWith("/")
+  )
+    return false;
+  if (!/(\+|\-|\*|\/)/g.test(str)) return false;
   return mathRegex.test(str);
+}
+
+export function unsafe_getMathExpressionResult(str: string) {
+  try {
+    const result = new Function(`return (${str})`)();
+    return result;
+  } catch {
+    return null;
+  }
 }

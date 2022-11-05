@@ -62,7 +62,7 @@ export class GameNotifications extends HTMLElement {
   removeNotification(element: HTMLDivElement) {
     element.classList.add("notification--out");
     setTimeout(() => {
-      element.remove();
+      element?.remove();
     }, 200);
   }
 

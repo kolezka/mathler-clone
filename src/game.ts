@@ -1,7 +1,7 @@
 import { EGameBoardEvents } from "./components/game-board/GameBoard";
 import { GameNotificationsEvents } from "./components/game-notifications/GameNotifications";
 import { GuessResultType } from "./const";
-import { isMathExpression } from "./utils";
+import { isMathExpression, unsafe_getMathExpressionResult } from "./utils";
 
 export enum EGameEvents {
   ADD = "ADD",
@@ -13,6 +13,7 @@ let currentCol = 0;
 let currentRow = 0;
 
 const expectedResult = "8/4+11";
+const expectedResultValue = 13;
 
 const guesses: (string | null)[][] = [[], [], [], [], [], []];
 const guessesResults: GuessResultType[][] = [[], [], [], [], [], []];
@@ -98,6 +99,8 @@ function onEnter() {
 
   const isValidExpression = isMathExpression(expression);
 
+  console.log(expression);
+
   if (expression.length < 6) {
     notify("Expression should fill all columns");
     return;
@@ -105,6 +108,13 @@ function onEnter() {
 
   if (!isValidExpression) {
     notify("Invalid expression");
+    return;
+  }
+
+  const expressionValue = unsafe_getMathExpressionResult(expression);
+
+  if (expressionValue !== null && expressionValue !== expectedResultValue) {
+    notify(`The result should be ${expectedResultValue}`);
     return;
   }
 
