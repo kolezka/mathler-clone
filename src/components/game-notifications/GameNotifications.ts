@@ -5,32 +5,33 @@ template.innerHTML = `
     @keyframes appear {
       0% {
         opacity: 0;
-        transform: translateY(-64px)
+        transform: translateY(-64px) translateX(-50%);
       }
       100% {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) translateX(-50%);
       }
     }
     @keyframes disappear {
       0% {
         opacity: 1;
-        transform: translateY(0)
+        transform: translateY(0) translateX(-50%);
       }
       100% {
         opacity: 0;
-        transform: translateY(-64px);
+        transform: translateY(-64px) translateX(-50%);
       }
     }
     .notification {
       position: absolute;
       top: 64px;
-      left: 0;
+      left: 50%;
+      transform: translateX(-50%);
       right: 0;
       background-color: var(--game-notification-background-color);
-      border-radius: 4px;
-      padding: 4px;
-      font-size: .875rem;
+      border-radius: var(--game-notification-border-radius);
+      padding: var(--game-notification-padding);
+      font-size: var(--game-notification-text-size);
       line-height: 1rem;
       animation: appear .5s forwards;
     }

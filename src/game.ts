@@ -1,6 +1,7 @@
 import { EGameBoardEvents } from "./components/game-board/GameBoard";
+import { GameDialogs } from "./components/game-dialog/GameDialog";
 import { GameNotificationsEvents } from "./components/game-notifications/GameNotifications";
-import { GuessResultType } from "./const";
+import { GuessResultType, LocalStorageKeys } from "./const";
 import { isMathExpression, unsafe_getMathExpressionResult } from "./utils";
 
 export enum EGameEvents {
@@ -8,6 +9,8 @@ export enum EGameEvents {
   DELETE = "DELETE",
   ENTER = "ENTER",
 }
+
+export interface IGameStats {}
 
 let currentCol = 0;
 let currentRow = 0;
@@ -19,9 +22,58 @@ const guesses: (string | null)[][] = [[], [], [], [], [], []];
 const guessesResults: GuessResultType[][] = [[], [], [], [], [], []];
 
 /*
+ *   Maps local storage data to varaibles
+ */
+function readLocalStorageState() {
+  try {
+    const storedGuesses = JSON.parse(
+      localStorage.getItem(LocalStorageKeys.GUESSES) || ""
+    );
+    const storedGuessesResults = JSON.parse(
+      localStorage.getItem(LocalStorageKeys.GUESSES_RESULTS) || ""
+    );
+    Object.assign(guesses, storedGuesses);
+    Object.assign(guessesResults, storedGuessesResults);
+
+    const storedCurrentCol = Number(
+      localStorage.getItem(LocalStorageKeys.CURRENT_COL)
+    );
+
+    if (!isNaN(storedCurrentCol)) {
+      currentCol = storedCurrentCol;
+    }
+
+    const storedCurrentRow = Number(
+      localStorage.getItem(LocalStorageKeys.CURRENT_ROW)
+    );
+    if (!isNaN(storedCurrentRow)) {
+      currentRow = storedCurrentRow;
+    }
+  } catch {}
+}
+
+/*
+ *   Saves state to local storage
+ */
+function saveStateToLocalStorage() {
+  localStorage.setItem(LocalStorageKeys.GUESSES, JSON.stringify(guesses));
+  localStorage.setItem(
+    LocalStorageKeys.GUESSES_RESULTS,
+    JSON.stringify(guessesResults)
+  );
+  localStorage.setItem(LocalStorageKeys.CURRENT_COL, String(currentCol));
+  localStorage.setItem(LocalStorageKeys.CURRENT_ROW, String(currentRow));
+}
+
+/*
  *   render data
  */
 function update() {
+  console.log("Update board", guesses, guessesResults);
+
+  // for each state update, we save data to localStorage
+  saveStateToLocalStorage();
+
   const gameBoard = document.getElementsByTagName("game-board")[0];
   if (gameBoard) {
     gameBoard.dispatchEvent(
@@ -30,9 +82,6 @@ function update() {
       })
     );
   }
-  // Safe data to localStorage
-  localStorage.setItem("guesses", JSON.stringify(guesses));
-  localStorage.setItem("guessesResults", JSON.stringify(guessesResults));
 }
 
 /*
@@ -68,13 +117,9 @@ function applyCurrentGuessesResults() {
  */
 function onAdd(e: Event) {
   const { detail } = e as CustomEvent;
-
   if (currentCol >= 6) return;
-
   guesses[currentRow][currentCol] = detail;
-
   currentCol += 1;
-
   update();
 }
 
@@ -83,11 +128,8 @@ function onAdd(e: Event) {
  */
 function onDelete() {
   if (!currentCol) return;
-
   guesses[currentRow][currentCol - 1] = null;
-
   currentCol -= 1;
-
   update();
 }
 
@@ -98,8 +140,6 @@ function onEnter() {
   const expression = guesses[currentRow].join("");
 
   const isValidExpression = isMathExpression(expression);
-
-  console.log(expression);
 
   if (expression.length < 6) {
     notify("Expression should fill all columns");
@@ -122,9 +162,12 @@ function onEnter() {
     // Apply current row results
     applyCurrentGuessesResults();
 
-    // const currentRowGuessValid = guessesResults[currentRow].every(
-    //   (guess) => guess === GuessResultType.CORRECT
-    // );
+    const currentRowGuessValid = guessesResults[currentRow].every(
+      (guess) => guess === GuessResultType.CORRECT
+    );
+
+    if (currentRowGuessValid) {
+    }
 
     // Go to next row
     currentRow += 1;
@@ -134,12 +177,15 @@ function onEnter() {
   update();
 }
 
-window.addEventListener(EGameEvents.ADD, onAdd);
-window.addEventListener(EGameEvents.DELETE, onDelete);
-window.addEventListener(EGameEvents.ENTER, onEnter);
+export function init() {
+  // Read stored data
+  readLocalStorageState();
 
-// export function init() {
-//   window.addEventListener(EGameEvents.ADD, onAdd);
-//   window.addEventListener(EGameEvents.DELETE, onDelete);
-//   window.addEventListener(EGameEvents.ENTER, onEnter);
-// }
+  // Update board & stats with stored data
+  update();
+
+  // Attach events
+  window.addEventListener(EGameEvents.ADD, onAdd);
+  window.addEventListener(EGameEvents.DELETE, onDelete);
+  window.addEventListener(EGameEvents.ENTER, onEnter);
+}

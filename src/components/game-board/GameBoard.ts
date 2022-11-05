@@ -45,8 +45,8 @@ template.innerHTML = `
     .col {
       margin: 0 2px;
       text-align: center;
-      width: var(--game-board-col-size);
-      height: var(--game-board-col-size);
+      min-width: var(--game-board-col-size);
+      min-height: var(--game-board-col-size);
       background-color: var(--game-board-col-background-color);
     }
 
@@ -54,7 +54,7 @@ template.innerHTML = `
       display: block;
       animation: appear .5s forwards;
       line-height: var(--game-board-col-size);
-      font-size: 1.25rem;
+      font-size: var(--game-board-col-text-size);
       font-weight: 700;
     }
 
@@ -110,7 +110,7 @@ export class GameBoard extends HTMLElement {
 
         const element = this.shadowRoot?.getElementById(`row-${x}-col-${y}`);
 
-        let valueElement = element?.children[0];
+        let valueElement = element?.children[0] as HTMLSpanElement;
 
         // Value removed, remove node here
         if (valueElement && !value) {
@@ -123,7 +123,7 @@ export class GameBoard extends HTMLElement {
 
         // Add value
         if (!valueElement && value) {
-          const valueElement = document.createElement("span");
+          valueElement = document.createElement("span");
           valueElement.innerText = String(value);
           valueElement.classList.add("value");
           element?.appendChild(valueElement);

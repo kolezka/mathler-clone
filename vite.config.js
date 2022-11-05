@@ -1,3 +1,5 @@
+import path from "path";
+
 /** @type {import('vite').UserConfig} */
 const config = {
   build: {
@@ -6,9 +8,6 @@ const config = {
         entryFileNames: "[name].js",
       },
     },
-    // rollupOptions: {
-    //
-    // }
   },
 };
 

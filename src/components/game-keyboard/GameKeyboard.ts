@@ -14,11 +14,12 @@ template.innerHTML = `
     button {
       cursor: pointer;
       border: none;
-      border-radius: 3px;
-      font-size: 16px;
-      margin: 2px;
+      border-radius: var(--game-keyboard-button-radius);
+      font-size: var(--game-keyboard-button-text-size);
+      margin: var(--game-keyboard-button-margin);
       line-height: 1;
-      padding: 4px 8px;
+      color: var(--game-keyboard-button-text-color);
+      padding: var(--game-keyboard-button-padding);
       background-color: var(--game-keyboard-button-background-color);
       transition: background-color .1s ease-in;
     }

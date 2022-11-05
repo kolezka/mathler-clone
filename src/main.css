@@ -10,19 +10,33 @@
   --text-color: #f9f9fb;
   --bg-color: #282b30;
 
-  /* Game Configurations */
-  --game-board-col-size: 32px;
+  /* Header */
+  --game-header-button-color: #989482;
+  --game-header-hover-button-color: #bfb9a3;
+
+  /* Board */
+  --game-board-col-size: 64px;
+  --game-board-col-text-size: 1.5rem;
   --game-board-background-color: #bfb9a3;
   --game-board-col-background-color: #989482;
-
   --game-board-result-correct: #008744;
   --game-board-result-different-place: #ffa700;
   --game-board-result-not-in-solution: #787878;
 
+  /* Keyboard */
+  --game-keyboard-button-text-color: #f9f9fb;
   --game-keyboard-button-background-color: #989482;
   --game-keyboard-button-hover-background-color: #bfb9a3;
+  --game-keyboard-button-text-size: 1.25rem;
+  --game-keyboard-button-padding: 8px;
+  --game-keyboard-button-margin: 2px;
+  --game-keyboard-button-radius: 4px;
 
+  /* Notifications */
   --game-notification-background-color: #787878;
+  --game-notification-border-radius: 4px;
+  --game-notification-padding: 8px;
+  --game-notification-text-size: 1rem;
 }
 
 /* @media (prefers-color-scheme: light) {
@@ -40,16 +54,9 @@ body {
 
 .container {
   position: relative;
-  max-width: 320px;
+  max-width: 440px;
   margin: 0 auto;
   padding: 16px;
-}
-
-.title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin: 0 0 16px;
 }
 
 game-board#game-board {
