@@ -1,3 +1,4 @@
+import { GuessResultType } from "../../const";
 import { EGameEvents } from "../../game";
 
 const template = document.createElement("template");
@@ -18,6 +19,18 @@ template.innerHTML = `
         transform: scale(1);
       }
     }
+    @keyframes disappear {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+      100% {
+        transform: scale(0);
+      }
+    }
     .board {
       overflow: hidden;
       border-radius: 3px;
@@ -27,9 +40,11 @@ template.innerHTML = `
     .row {
       display: flex;
       height: var(--game-board-col-size);
+      margin: 1px 0;
     }
 
     .col {
+      margin: 0 1px;
       text-align: center;
       width: var(--game-board-col-size);
       height: var(--game-board-col-size);
@@ -40,11 +55,33 @@ template.innerHTML = `
       display: block;
       animation: appear .5s forwards;
       line-height: var(--game-board-col-size);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .value--correct {
+      background-color: var(--game-board-result-correct);
+    }
+
+    .value--different-place {
+      background-color: var(--game-board-result-different-place);
+    }
+
+    .value--not-in-solution {
+      background-color: var(--game-board-result-not-in-solution);
+    }
+
+    .value.remove {
+      animation: disappear .2s forwards;
     }
 
   </style>
   <div class="board" id="board"></div>
 `;
+
+export enum EGameBoardEvents {
+  UPDATE = "UPDATE",
+}
 
 export class GameBoard extends HTMLElement {
   constructor() {
@@ -53,45 +90,65 @@ export class GameBoard extends HTMLElement {
   }
 
   connectedCallback() {
-    console.log("connectedCallback");
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.createBoard();
-    window.addEventListener(EGameEvents.UPDATE, (e: any) => {
-      this.updateBoard(e.detail);
-    });
+    this.addEventListener(EGameBoardEvents.UPDATE, (e: any) =>
+      this.updateBoard(e.detail)
+    );
   }
 
-  updateBoard(data = []) {
-    console.log("Update Board", data);
+  updateBoard({
+    guesses,
+    guessesResults,
+  }: {
+    guesses: string[][];
+    guessesResults: GuessResultType[][];
+  }) {
+    console.log("updateBoard", guesses, guessesResults);
 
     for (let x = 0; x < 6; x++) {
       for (let y = 0; y < 6; y++) {
-        const value = data[x]?.[y];
+        const value = guesses[x]?.[y];
+        const result = guessesResults[x]?.[y];
+
         const element = this.shadowRoot?.getElementById(`row-${x}-col-${y}`);
-        const children = element?.children[0];
+
+        let valueElement = element?.children[0];
 
         // Value removed, remove node here
-        if (children && !value) {
-          children.remove();
+        if (valueElement && !value) {
+          // remove node animation
+          valueElement.classList.add("remove");
+          setTimeout(() => {
+            valueElement?.remove();
+          }, 200);
         }
 
         // Add value
-        if (!children && value) {
+        if (!valueElement && value) {
           const valueElement = document.createElement("span");
           valueElement.innerText = value;
           valueElement.classList.add("value");
           element?.appendChild(valueElement);
         }
 
-        // Check value to be sure
-        if (children && (children as HTMLSpanElement)?.innerText !== value) {
-          (children as HTMLSpanElement).innerText = value;
+        // Apply result
+        if (valueElement && result) {
+          if (result === GuessResultType.CORRECT) {
+            valueElement?.classList.add("value--correct");
+          }
+          if (result === GuessResultType.DIFFERENT_PLACE) {
+            valueElement?.classList.add("value--different-place");
+          }
+          if (result === GuessResultType.NOT_IN_SOLUTION) {
+            valueElement?.classList.add("value--not-in-solution");
+          }
         }
       }
     }
   }
 
-  createBoard(data = []) {
+  createBoard() {
     const boardElement = this.shadowRoot?.getElementById("board");
     for (let x = 0; x < 6; x++) {
       const row = document.createElement("div");
@@ -106,6 +163,8 @@ export class GameBoard extends HTMLElement {
       }
     }
   }
+
+  drawRowCheckResult(row: number, result: GuessResultType[]) {}
 }
 
 customElements.define("game-board", GameBoard);

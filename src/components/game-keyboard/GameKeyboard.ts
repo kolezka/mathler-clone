@@ -16,9 +16,13 @@ template.innerHTML = `
       border: none;
       border-radius: 3px;
       font-size: 16px;
-      margin: 1px;
+      margin: 2px;
+      line-height: 1;
+      padding: 4px 8px;
       background-color: var(--game-keyboard-button-background-color);
+      transition: background-color .1s ease-in;
     }
+
     button:hover {
       background-color: var(--game-keyboard-button-hover-background-color);
     }
@@ -53,7 +57,7 @@ export class GameKeyboard extends HTMLElement {
     this.attachShadow({ mode: "open" });
   }
 
-  onButtonClick(e: any) {}
+  onButtonClick() {}
 
   bindEvents() {
     const buttons = this.shadowRoot?.querySelectorAll("button");
