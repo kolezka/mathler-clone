@@ -1,5 +1,4 @@
 import { GuessResultType } from "../../const";
-import { EGameEvents } from "../../game";
 
 const template = document.createElement("template");
 
@@ -104,8 +103,6 @@ export class GameBoard extends HTMLElement {
     guesses: string[][];
     guessesResults: GuessResultType[][];
   }) {
-    console.log("updateBoard", guesses, guessesResults);
-
     for (let x = 0; x < 6; x++) {
       for (let y = 0; y < 6; y++) {
         const value = guesses[x]?.[y];
@@ -163,8 +160,6 @@ export class GameBoard extends HTMLElement {
       }
     }
   }
-
-  drawRowCheckResult(row: number, result: GuessResultType[]) {}
 }
 
 customElements.define("game-board", GameBoard);

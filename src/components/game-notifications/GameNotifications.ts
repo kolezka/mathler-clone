@@ -55,7 +55,6 @@ export class GameNotifications extends HTMLElement {
   connectedCallback() {
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.addEventListener(GameNotificationsEvents.NOTIFY, (e: Event) => {
-      console.log(e);
       this.addNotification((e as CustomEvent).detail);
     });
   }
