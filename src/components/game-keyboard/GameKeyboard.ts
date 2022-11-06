@@ -67,7 +67,7 @@ export class GameKeyboard extends HTMLElement {
     this.attachShadow({ mode: "open" });
   }
 
-  onButtonClick() {}
+  // markGuesses(guesses) {}
 
   bindButtonsEvents() {
     const buttons = this.shadowRoot?.querySelectorAll("button");
@@ -80,7 +80,6 @@ export class GameKeyboard extends HTMLElement {
           if (isActionButton) {
             if (action === "Enter") {
               this.dispatchEvent(new CustomEvent(GameKeyboardEvents.ENTER));
-              console.log("here");
             }
             if (action === "Delete") {
               this.dispatchEvent(new CustomEvent(GameKeyboardEvents.DELETE));

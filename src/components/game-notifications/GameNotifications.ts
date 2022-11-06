@@ -32,6 +32,7 @@ template.innerHTML = `
       border-radius: var(--game-notification-border-radius);
       padding: var(--game-notification-padding);
       font-size: var(--game-notification-text-size);
+      min-width: 320px;
       line-height: 1rem;
       animation: appear .5s forwards;
     }

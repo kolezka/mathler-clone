@@ -1,3 +1,5 @@
+export type GameGuesses = string[][];
+
 export enum GuessResultType {
   CORRECT = "CORRECT",
   DIFFERENT_PLACE = "DIFFERENT_PLACE",
@@ -6,7 +8,15 @@ export enum GuessResultType {
 
 export enum LocalStorageKeys {
   GUESSES = "guesses",
-  GUESSES_RESULTS = "guessesResults",
-  CURRENT_ROW = "currentRow",
-  CURRENT_COL = "currentCol",
+}
+
+export interface GameStats {
+  winDistribution: number[];
+  gamesFailed: number;
+  totalGames: number;
+}
+
+export interface GameState {
+  guesses: GameGuesses;
+  solution: string;
 }

@@ -26,3 +26,11 @@ export function unsafe_getMathExpressionResult(str: string) {
     return null;
   }
 }
+
+export function isTheSameDay(x: Date, y: Date) {
+  return (
+    x.getFullYear() === y.getFullYear() &&
+    x.getMonth() === y.getMonth() &&
+    x.getDate() === y.getDate()
+  );
+}

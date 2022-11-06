@@ -1,6 +1,10 @@
-import { isMathExpression, unsafe_getMathExpressionResult } from "./utils";
+import {
+  isMathExpression,
+  isTheSameDay,
+  unsafe_getMathExpressionResult,
+} from "./utils";
 
-describe("isMathExpression", () => {
+describe("unsafe_getMathExpressionResult", () => {
   it("returns math expression value", () => {
     const expression = "2+2";
     const expectedValue = 4;
@@ -28,4 +32,18 @@ describe("isMathExpression", () => {
       expect(isMathExpression(expression)).toBe(false);
     }
   );
+});
+
+describe("isTheSameDay", () => {
+  it("2022-11-06T20:02:27.220Z and 2022-11-06T20:02:27.220Z", () => {
+    const x = new Date("2022-11-06T20:02:27.220Z");
+    const y = new Date("2022-11-06T20:02:27.220Z");
+    expect(isTheSameDay(x, y)).toBe(true);
+  });
+
+  it("2022-11-06T20:02:27.220Z and 2001-11-06T20:02:27.220Z", () => {
+    const x = new Date("2022-11-06T20:02:27.220Z");
+    const y = new Date("2001-11-06T20:02:27.220Z");
+    expect(isTheSameDay(x, y)).toBe(false);
+  });
 });

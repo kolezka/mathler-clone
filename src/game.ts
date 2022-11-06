@@ -1,68 +1,14 @@
+// Load web components
+import "./components";
+
 import { GameBoard } from "./components/game-board/GameBoard";
 import {
   GameKeyboard,
   GameKeyboardEvents,
 } from "./components/game-keyboard/GameKeyboard";
 import { GameNotifications } from "./components/game-notifications/GameNotifications";
-import { LocalStorageKeys } from "./const";
+import { GameGuesses, LocalStorageKeys } from "./const";
 import { isMathExpression, unsafe_getMathExpressionResult } from "./utils";
-
-/*
- *   Validates guesses[currentRow] by mapping each cell value to GuessResultType in guessesResults[currentRow]
- */
-function applyCurrentGuessesResults() {
-  // const expression = guesses[currentRow];
-  // guessesResults[currentRow] = (expression as string[]).map((char, index) => {
-  //   if (char === expectedResult[index]) {
-  //     return GuessResultType.CORRECT;
-  //   }
-  //   if (expectedResult.includes(char)) {
-  //     return GuessResultType.DIFFERENT_PLACE;
-  //   }
-  //   return GuessResultType.NOT_IN_SOLUTION;
-  // });
-}
-
-// function onEnter() {
-//   const expression = guesses[currentRow].join("");
-
-//   const isValidExpression = isMathExpression(expression);
-
-//   if (expression.length < 6) {
-//     notify("Expression should fill all columns");
-//     return;
-//   }
-
-//   if (!isValidExpression) {
-//     notify("Invalid expression");
-//     return;
-//   }
-
-//   const expressionValue = unsafe_getMathExpressionResult(expression);
-
-//   if (expressionValue !== null && expressionValue !== expectedResultValue) {
-//     notify(`The result should be ${expectedResultValue}`);
-//     return;
-//   }
-
-//   if (currentRow < 6) {
-//     // Apply current row results
-//     applyCurrentGuessesResults();
-
-//     // const currentRowGuessValid = guessesResults[currentRow].every(
-//     //   (guess) => guess === GuessResultType.CORRECT
-//     // );
-
-//     // if (currentRowGuessValid) {
-//     // }
-
-//     // Go to next row
-//     currentRow += 1;
-//     currentCol = 0;
-//   }
-
-//   update();
-// }
 
 export class Mathler {
   $board: GameBoard;
@@ -72,12 +18,21 @@ export class Mathler {
   currentCol = 0;
   currentRow = 0;
 
-  guesses: (string | null)[][] = [[], [], [], [], [], []];
+  guesses: GameGuesses = [[], [], [], [], [], []]; // The guesses previously picked by player
 
-  expectedResult = "8/4+11";
-  expectedResultValue = 13;
+  expectedResult: string;
+  expectedResultValue: number;
 
-  constructor() {
+  constructor({
+    expectedResult,
+    expectedResultValue,
+  }: {
+    expectedResult: string;
+    expectedResultValue: number;
+  }) {
+    this.expectedResult = expectedResult;
+    this.expectedResultValue = expectedResultValue;
+
     this.$board = document.querySelector("game-board") as GameBoard;
     this.$keyboard = document.querySelector("game-keyboard") as GameKeyboard;
     this.$notifications = document.querySelector(
@@ -92,6 +47,9 @@ export class Mathler {
     // Attach events
     this.attachEvents();
 
+    // Read local storage state
+    this.readLocalStorageState();
+
     // redraw board
     this.update();
 
@@ -101,42 +59,96 @@ export class Mathler {
   onAdd(e: Event) {
     const { detail } = e as CustomEvent;
     if (this.currentCol >= 6) return;
-
     this.guesses[this.currentRow][this.currentCol] = detail;
     this.currentCol += 1;
-
     this.update();
   }
 
-  onDelete(e: Event) {
+  onDelete() {
     if (!this.currentCol) return;
-
-    this.guesses[this.currentRow][this.currentCol - 1] = null;
+    delete this.guesses[this.currentRow][this.currentCol - 1];
     this.currentCol -= 1;
-
     this.update();
   }
 
-  onEnter(e: Event) {
-    // TODO
-    console.log("enter");
+  onEnter() {
+    const currentRowExpression = this.guesses[this.currentRow].join("");
+
+    if (currentRowExpression.length < 6) {
+      return this.notify(
+        "The specified expression is too short. It should fill all the columns."
+      );
+    }
+
+    const isValidExpression = isMathExpression(currentRowExpression);
+    const currentRowExpressionValue =
+      unsafe_getMathExpressionResult(currentRowExpression);
+
+    if (!isValidExpression || !currentRowExpressionValue) {
+      return this.notify(
+        "The given expression is an incorrect mathematical expression or is the number itself."
+      );
+    }
+
+    if (currentRowExpressionValue !== this.expectedResultValue) {
+      return this.notify(
+        `The result of the expression should be ${this.expectedResultValue}`
+      );
+    }
+
+    // Check if current row guess is correct one
+    if (currentRowExpression === this.expectedResult) {
+      // Finish todays game
+      // Show stats dialog
+    } else {
+      if (this.currentRow < 6) {
+        this.currentCol = 0;
+        this.currentRow += 1;
+      } else {
+        // Game failed
+      }
+    }
+
+    this.saveStateToLocalStorage();
+    this.update();
   }
 
   attachEvents() {
     this.$keyboard.addEventListener(GameKeyboardEvents.ADD, this.onAdd);
     this.$keyboard.addEventListener(GameKeyboardEvents.DELETE, this.onDelete);
-    this.$keyboard.addEventListener(GameKeyboardEvents.ENTER, this.onDelete);
+    this.$keyboard.addEventListener(GameKeyboardEvents.ENTER, this.onEnter);
   }
 
   readLocalStorageState() {
     try {
+      const dirtyStoredGuesses = localStorage.getItem(LocalStorageKeys.GUESSES);
+      if (dirtyStoredGuesses) {
+        const storedGuesses = JSON.parse(dirtyStoredGuesses) as GameGuesses;
+        this.guesses = storedGuesses;
+
+        this.currentRow = storedGuesses.reduce((val, guess) => {
+          if (guess.length) {
+            return val + 1;
+          }
+          return val;
+        }, 0);
+      }
     } catch {}
   }
 
-  saveStateToLocalStorage() {}
+  saveStateToLocalStorage() {
+    localStorage.setItem(
+      LocalStorageKeys.GUESSES,
+      JSON.stringify(this.guesses)
+    );
+  }
 
   update() {
-    this.$board.updateBoard({ guesses: this.guesses, guessesResults: [] });
+    this.$board.updateBoard({
+      guesses: this.guesses,
+      expectedResult: this.expectedResult,
+      currentRow: this.currentRow,
+    });
   }
 
   notify(str: string) {

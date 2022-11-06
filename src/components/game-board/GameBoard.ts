@@ -1,4 +1,4 @@
-import { GuessResultType } from "../../const";
+import { GameGuesses } from "../../const";
 
 const template = document.createElement("template");
 
@@ -91,17 +91,23 @@ export class GameBoard extends HTMLElement {
 
   updateBoard({
     guesses,
-    guessesResults,
+    expectedResult,
+    currentRow,
   }: {
-    guesses: (string | null)[][];
-    guessesResults: GuessResultType[][];
+    guesses: GameGuesses;
+    expectedResult: string;
+    currentRow: number;
   }) {
-    for (let x = 0; x < 6; x++) {
-      for (let y = 0; y < 6; y++) {
-        const value = guesses[x]?.[y];
-        const result = guessesResults[x]?.[y];
+    console.log(guesses);
 
-        const element = this.shadowRoot?.getElementById(`row-${x}-col-${y}`);
+    for (let row = 0; row < 6; row++) {
+      for (let col = 0; col < 6; col++) {
+        const value = guesses[row]?.[col];
+        // const result = guessesResults[x]?.[y];
+
+        const element = this.shadowRoot?.getElementById(
+          `row-${row}-col-${col}`
+        );
 
         let valueElement = element?.children[0] as HTMLSpanElement;
 
@@ -122,16 +128,20 @@ export class GameBoard extends HTMLElement {
           element?.appendChild(valueElement);
         }
 
-        // Apply result
-        if (valueElement && result) {
-          if (result === GuessResultType.CORRECT) {
-            valueElement?.classList.add("value--correct");
+        // Mark result
+        if (valueElement && row < currentRow) {
+          const indexInSolution = expectedResult.indexOf(value);
+
+          if (indexInSolution === -1) {
+            valueElement?.classList.add("value--not-in-solution");
           }
-          if (result === GuessResultType.DIFFERENT_PLACE) {
+
+          if (indexInSolution !== col) {
             valueElement?.classList.add("value--different-place");
           }
-          if (result === GuessResultType.NOT_IN_SOLUTION) {
-            valueElement?.classList.add("value--not-in-solution");
+
+          if (indexInSolution === col) {
+            valueElement?.classList.add("value--correct");
           }
         }
       }
