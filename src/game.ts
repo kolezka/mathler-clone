@@ -11,6 +11,8 @@ export enum EGameEvents {
 
 export interface IGameStats {}
 
+let ready = false;
+
 let currentCol = 0;
 let currentRow = 0;
 
