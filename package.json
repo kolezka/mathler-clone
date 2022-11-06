@@ -5,8 +5,10 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "cypress:open": "cypress open",
-    "jest:coverage": "jest --coverage"
+    "jest:coverage": "jest --coverage",
+    "jest:test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
