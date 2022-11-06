@@ -1,6 +1,3 @@
-import { GameDialogs } from "../game-dialog/GameDialog";
-import { infoDialogTemplate } from "../game-dialog/templates";
-
 const template = document.createElement("template");
 
 template.innerHTML = `

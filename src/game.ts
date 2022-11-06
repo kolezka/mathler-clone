@@ -11,7 +11,7 @@ export enum EGameEvents {
 
 export interface IGameStats {}
 
-let ready = false;
+// let ready = false;
 
 let currentCol = 0;
 let currentRow = 0;
@@ -22,7 +22,7 @@ let expectedResultValue = 13;
 const guesses: (string | null)[][] = [[], [], [], [], [], []];
 const guessesResults: GuessResultType[][] = [[], [], [], [], [], []];
 
-async function readExpectedResult() {}
+// async function readExpectedResult() {}
 
 /*
  *   Maps local storage data to varaibles
