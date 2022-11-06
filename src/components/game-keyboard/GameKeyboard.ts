@@ -1,5 +1,3 @@
-import { EGameEvents } from "../../game";
-
 const template = document.createElement("template");
 
 template.innerHTML = `
@@ -57,6 +55,12 @@ template.innerHTML = `
   </div>
 `;
 
+export enum GameKeyboardEvents {
+  ADD = "ADD",
+  ENTER = "ENTER",
+  DELETE = "DELETE",
+}
+
 export class GameKeyboard extends HTMLElement {
   constructor() {
     super();
@@ -75,14 +79,17 @@ export class GameKeyboard extends HTMLElement {
           const isActionButton = !!action;
           if (isActionButton) {
             if (action === "Enter") {
-              window.dispatchEvent(new CustomEvent(EGameEvents.ENTER));
+              this.dispatchEvent(new CustomEvent(GameKeyboardEvents.ENTER));
+              console.log("here");
             }
             if (action === "Delete") {
-              window.dispatchEvent(new CustomEvent(EGameEvents.DELETE));
+              this.dispatchEvent(new CustomEvent(GameKeyboardEvents.DELETE));
             }
           } else {
-            window.dispatchEvent(
-              new CustomEvent(EGameEvents.ADD, { detail: value })
+            console.log(this);
+
+            this.dispatchEvent(
+              new CustomEvent(GameKeyboardEvents.ADD, { detail: value })
             );
           }
         });
@@ -93,13 +100,13 @@ export class GameKeyboard extends HTMLElement {
   bindKeyboardEvents() {
     window.addEventListener("keydown", (e) => {
       if (!isNaN(Number(e.key)) || ["*", "/", "+", "-"].includes(e.key)) {
-        window.dispatchEvent(
-          new CustomEvent(EGameEvents.ADD, { detail: String(e.key) })
+        this.dispatchEvent(
+          new CustomEvent(GameKeyboardEvents.ADD, { detail: String(e.key) })
         );
       } else if (e.key === "Enter") {
-        window.dispatchEvent(new CustomEvent(EGameEvents.ENTER));
+        this.dispatchEvent(new CustomEvent(GameKeyboardEvents.ENTER));
       } else if (e.key === "Backspace") {
-        window.dispatchEvent(new CustomEvent(EGameEvents.DELETE));
+        this.dispatchEvent(new CustomEvent(GameKeyboardEvents.DELETE));
       }
     });
   }

@@ -4,8 +4,8 @@ import "./main.css";
 // Load Web Components
 import "./components";
 
-import { init } from "./game";
+import { Mathler } from "./game";
 
 window.addEventListener("load", () => {
-  init();
+  new Mathler();
 });
