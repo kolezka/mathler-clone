@@ -1,6 +1,6 @@
 import { GameBoard } from "./components/game-board/GameBoard";
 import { GameNotifications } from "./components/game-notifications/GameNotifications";
-import { GuessResultType, LocalStorageKeys } from "./const";
+import { LocalStorageKeys } from "./const";
 import { isMathExpression, unsafe_getMathExpressionResult } from "./utils";
 
 export enum EGameEvents {
@@ -16,11 +16,16 @@ export interface IGameStats {}
 let currentCol = 0;
 let currentRow = 0;
 
-let expectedResult = "8/4+11";
-let expectedResultValue = 13;
+// let expectedResult = "8/4+11"; // TODO: Fetch data
+let expectedResultValue = 13; // TODO: Fetch data
 
 const guesses: (string | null)[][] = [[], [], [], [], [], []];
-const guessesResults: GuessResultType[][] = [[], [], [], [], [], []];
+// const guessesResults: GuessResultType[][] = [[], [], [], [], [], []];
+export interface GameStats {
+  correctGuesses: number[];
+  totalGames: number;
+  gamesWon: number;
+}
 
 // async function readExpectedResult() {}
 
@@ -32,11 +37,11 @@ function readLocalStorageState() {
     const storedGuesses = JSON.parse(
       localStorage.getItem(LocalStorageKeys.GUESSES) || ""
     );
-    const storedGuessesResults = JSON.parse(
-      localStorage.getItem(LocalStorageKeys.GUESSES_RESULTS) || ""
-    );
+    // const storedGuessesResults = JSON.parse(
+    //   localStorage.getItem(LocalStorageKeys.GUESSES_RESULTS) || ""
+    // );
     Object.assign(guesses, storedGuesses);
-    Object.assign(guessesResults, storedGuessesResults);
+    // Object.assign(guessesResults, storedGuessesResults);
 
     const storedCurrentCol = Number(
       localStorage.getItem(LocalStorageKeys.CURRENT_COL)
@@ -60,10 +65,10 @@ function readLocalStorageState() {
  */
 function saveStateToLocalStorage() {
   localStorage.setItem(LocalStorageKeys.GUESSES, JSON.stringify(guesses));
-  localStorage.setItem(
-    LocalStorageKeys.GUESSES_RESULTS,
-    JSON.stringify(guessesResults)
-  );
+  // localStorage.setItem(
+  //   LocalStorageKeys.GUESSES_RESULTS,
+  //   JSON.stringify(guessesResults)
+  // );
   localStorage.setItem(LocalStorageKeys.CURRENT_COL, String(currentCol));
   localStorage.setItem(LocalStorageKeys.CURRENT_ROW, String(currentRow));
 }
@@ -72,7 +77,7 @@ function saveStateToLocalStorage() {
  *   Render data
  */
 function update() {
-  console.log("Update board", guesses, guessesResults);
+  // console.log("Update board", guesses, guessesResults);
 
   // for each state update, we save data to localStorage
   saveStateToLocalStorage();
@@ -81,7 +86,7 @@ function update() {
     "game-board"
   )[0] as GameBoard;
   if ($gameBoard) {
-    $gameBoard.updateBoard({ guesses, guessesResults });
+    $gameBoard.updateBoard({ guesses, guessesResults: [] });
   }
 }
 
@@ -101,16 +106,16 @@ function notify(str: string) {
  *   Validates guesses[currentRow] by mapping each cell value to GuessResultType in guessesResults[currentRow]
  */
 function applyCurrentGuessesResults() {
-  const expression = guesses[currentRow];
-  guessesResults[currentRow] = (expression as string[]).map((char, index) => {
-    if (char === expectedResult[index]) {
-      return GuessResultType.CORRECT;
-    }
-    if (expectedResult.includes(char)) {
-      return GuessResultType.DIFFERENT_PLACE;
-    }
-    return GuessResultType.NOT_IN_SOLUTION;
-  });
+  // const expression = guesses[currentRow];
+  // guessesResults[currentRow] = (expression as string[]).map((char, index) => {
+  //   if (char === expectedResult[index]) {
+  //     return GuessResultType.CORRECT;
+  //   }
+  //   if (expectedResult.includes(char)) {
+  //     return GuessResultType.DIFFERENT_PLACE;
+  //   }
+  //   return GuessResultType.NOT_IN_SOLUTION;
+  // });
 }
 
 /*
@@ -163,12 +168,12 @@ function onEnter() {
     // Apply current row results
     applyCurrentGuessesResults();
 
-    const currentRowGuessValid = guessesResults[currentRow].every(
-      (guess) => guess === GuessResultType.CORRECT
-    );
+    // const currentRowGuessValid = guessesResults[currentRow].every(
+    //   (guess) => guess === GuessResultType.CORRECT
+    // );
 
-    if (currentRowGuessValid) {
-    }
+    // if (currentRowGuessValid) {
+    // }
 
     // Go to next row
     currentRow += 1;

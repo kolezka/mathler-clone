@@ -1,1 +1,0 @@
-export { infoDialogTemplate } from "./infoDialogTemplate";

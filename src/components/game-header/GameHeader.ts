@@ -1,3 +1,6 @@
+import { helpDialogTemplate } from "../dialogs/help-dialog/HelpDialog";
+import { openDialog } from "../game-dialog/utils";
+
 const template = document.createElement("template");
 
 template.innerHTML = `
@@ -34,7 +37,7 @@ template.innerHTML = `
   </style>
   <header>
     <h3>Mathematica</h3>
-    <button type="button">
+    <button id="help-button" type="button">
       <svg enable-background="new 0 0 50 50" version="1.1" viewBox="0 0 50 50" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
           <path d="m45 0h-40c-2.75 0-5 2.25-5 5v40c0 2.75 2.25 5 5 5h40c2.75 0 5-2.25 5-5v-40c0-2.75-2.25-5-5-5zm1 45c0 0.542-0.458 1-1 1h-40c-0.542 0-1-0.458-1-1v-40c0-0.542 0.458-1 1-1h40c0.542 0 1 0.458 1 1v40z"/>
           <path d="m24.733 34.318c-0.936 0-1.73 0.322-2.375 0.947-0.645 0.627-0.968 1.414-0.968 2.338 0 1.035 0.334 1.85 1 2.429 0.667 0.581 1.449 0.862 2.342 0.862 0.868 0 1.631-0.297 2.295-0.881 0.656-0.582 0.988-1.395 0.988-2.41 0-0.924-0.32-1.711-0.953-2.338-0.623-0.624-1.405-0.947-2.329-0.947z"/>
@@ -61,15 +64,16 @@ export class GameHeader extends HTMLElement {
   }
 
   onInfoIconClick() {
-    // const gameDialogs = document.querySelector("game-dialogs") as GameDialogs;
-    // gameDialogs.showDialog(infoDialogTemplate, "How to play?");
+    openDialog(helpDialogTemplate.content.cloneNode(true));
   }
 
   connectedCallback() {
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.shadowRoot?.querySelector("button")?.addEventListener("click", () => {
-      this.onInfoIconClick();
-    });
+    this.shadowRoot
+      ?.getElementById("help-button")
+      ?.addEventListener("click", () => {
+        this.onInfoIconClick();
+      });
   }
 }
 
