@@ -1,6 +1,5 @@
-import { EGameBoardEvents } from "./components/game-board/GameBoard";
-import { GameDialogs } from "./components/game-dialog/GameDialog";
-import { GameNotificationsEvents } from "./components/game-notifications/GameNotifications";
+import { GameBoard } from "./components/game-board/GameBoard";
+import { GameNotifications } from "./components/game-notifications/GameNotifications";
 import { GuessResultType, LocalStorageKeys } from "./const";
 import { isMathExpression, unsafe_getMathExpressionResult } from "./utils";
 
@@ -15,11 +14,13 @@ export interface IGameStats {}
 let currentCol = 0;
 let currentRow = 0;
 
-const expectedResult = "8/4+11";
-const expectedResultValue = 13;
+let expectedResult = "8/4+11";
+let expectedResultValue = 13;
 
 const guesses: (string | null)[][] = [[], [], [], [], [], []];
 const guessesResults: GuessResultType[][] = [[], [], [], [], [], []];
+
+async function readExpectedResult() {}
 
 /*
  *   Maps local storage data to varaibles
@@ -66,7 +67,7 @@ function saveStateToLocalStorage() {
 }
 
 /*
- *   render data
+ *   Render data
  */
 function update() {
   console.log("Update board", guesses, guessesResults);
@@ -74,25 +75,23 @@ function update() {
   // for each state update, we save data to localStorage
   saveStateToLocalStorage();
 
-  const gameBoard = document.getElementsByTagName("game-board")[0];
-  if (gameBoard) {
-    gameBoard.dispatchEvent(
-      new CustomEvent(EGameBoardEvents.UPDATE, {
-        detail: { guesses, guessesResults },
-      })
-    );
+  const $gameBoard = document.getElementsByTagName(
+    "game-board"
+  )[0] as GameBoard;
+  if ($gameBoard) {
+    $gameBoard.updateBoard({ guesses, guessesResults });
   }
 }
 
 /*
- *   render notifications
+ *   Render notifications
  */
 function notify(str: string) {
-  const notifications = document.getElementsByTagName("game-notifications")[0];
-  if (notifications) {
-    notifications.dispatchEvent(
-      new CustomEvent(GameNotificationsEvents.NOTIFY, { detail: str })
-    );
+  const $notifications = document.getElementsByTagName(
+    "game-notifications"
+  )[0] as GameNotifications;
+  if ($notifications) {
+    $notifications.addNotification(str);
   }
 }
 

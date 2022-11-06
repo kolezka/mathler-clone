@@ -65,39 +65,30 @@ export class GameDialogs extends HTMLElement {
     this.attachShadow({ mode: "open" });
   }
 
-  closeDialog() {
-    if (this.shadowRoot) {
-      this.shadowRoot.innerHTML = ``;
-    }
-  }
+  // closeDialog() {
+  //   if (this.shadowRoot) {
+  //     this.shadowRoot.innerHTML = ``;
+  //   }
+  // }
 
   showDialog(template: HTMLTemplateElement, dialogTitle?: string) {
     this.shadowRoot?.appendChild(dialogTemplate.content.cloneNode(true));
 
-    this.shadowRoot?.querySelector("button")?.addEventListener("click", () => {
-      this.closeDialog();
-    });
+    // Apply close event
+    // this.shadowRoot?.querySelector("button")?.addEventListener("click", () => {
+    //   this.closeDialog();
+    // });
 
+    // Apply template
     this.shadowRoot
       ?.querySelector(".dialog-body")
       ?.appendChild(template.content.cloneNode(true));
 
+    // Apply title
     const dialogTitleElement = this.shadowRoot?.querySelector(".dialog-title");
-
     if (dialogTitleElement && dialogTitle) {
       dialogTitleElement.innerHTML = dialogTitle;
     }
-
-    // if (dialogTitle) {
-    //   this.shadowRoot?.querySelector('.dialog-title')?.innerHTML = ``
-    // }
-
-    // const dialog = dialogTemplate.content.cloneNode(true);
-    // const dialogBody = dialogTemplate.querySelector('.dialog-body');
-    // if (dialogBody) {
-    //   dialog.replaceChild(dialogBody, template);
-    //   this.shadowRoot?.appendChild(dialog);
-    // }
   }
 }
 

@@ -42,10 +42,6 @@ template.innerHTML = `
   <div id="root"></div>
 `;
 
-export enum GameNotificationsEvents {
-  NOTIFY = "NOTIFY",
-}
-
 const NOTIFICATION_TIMEOUT = 1500;
 export class GameNotifications extends HTMLElement {
   constructor() {
@@ -55,9 +51,6 @@ export class GameNotifications extends HTMLElement {
 
   connectedCallback() {
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.addEventListener(GameNotificationsEvents.NOTIFY, (e: Event) => {
-      this.addNotification((e as CustomEvent).detail);
-    });
   }
 
   removeNotification(element: HTMLDivElement) {

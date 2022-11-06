@@ -78,10 +78,6 @@ template.innerHTML = `
   <div class="board" id="board"></div>
 `;
 
-export enum EGameBoardEvents {
-  UPDATE = "UPDATE",
-}
-
 export class GameBoard extends HTMLElement {
   constructor() {
     super();
@@ -91,16 +87,13 @@ export class GameBoard extends HTMLElement {
   connectedCallback() {
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.createBoard();
-    this.addEventListener(EGameBoardEvents.UPDATE, (e: any) =>
-      this.updateBoard(e.detail)
-    );
   }
 
   updateBoard({
     guesses,
     guessesResults,
   }: {
-    guesses: string[][];
+    guesses: (string | null)[][];
     guessesResults: GuessResultType[][];
   }) {
     for (let x = 0; x < 6; x++) {
