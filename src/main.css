@@ -37,6 +37,8 @@
   --game-notification-border-radius: 4px;
   --game-notification-padding: 8px;
   --game-notification-text-size: 1rem;
+
+  /* Dialog */
 }
 
 /* @media (prefers-color-scheme: light) {

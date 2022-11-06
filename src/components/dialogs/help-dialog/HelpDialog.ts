@@ -4,6 +4,9 @@ helpDialogTemplate.innerHTML = `
   <span slot="dialog-title">How to play?</span>
   <div slot="dialog-body">
     <style>
+      strong {
+        font-weight: 700;
+      }
       p {
         font-size: 0.875rem;
         margin: 0 0 8px;
@@ -27,9 +30,9 @@ helpDialogTemplate.innerHTML = `
       close you are to the solution.
     </p>
     <ul>
-      <li>Green are in the correct place.</li>
-      <li>Orange are in the solution, but in a different place.</li>
-      <li>Gray are not in the solution.</li>
+      <li><strong style="color: var(--game-board-result-correct)">Green</strong> are in the correct place.</li>
+      <li><strong style="color: var(--game-board-result-different-place)">Orange</strong> are in the solution, but in a different place.</li>
+      <li><strong style="color: var(--game-board-result-not-in-solution)">Gray</strong> are not in the solution.</li>
     </ul>
     <h3>Additional rules</h3>
     <ul>

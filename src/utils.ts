@@ -34,3 +34,10 @@ export function isTheSameDay(x: Date, y: Date) {
     x.getDate() === y.getDate()
   );
 }
+
+export function getAllIndexes(arr: string, val: any) {
+  var indexes = [],
+    i;
+  for (i = 0; i < arr.length; i++) if (arr[i] === val) indexes.push(i);
+  return indexes;
+}

@@ -1,4 +1,5 @@
 import { GameGuesses } from "../../const";
+import { getAllIndexes } from "../../utils";
 
 const template = document.createElement("template");
 
@@ -98,12 +99,10 @@ export class GameBoard extends HTMLElement {
     expectedResult: string;
     currentRow: number;
   }) {
-    console.log(guesses);
 
     for (let row = 0; row < 6; row++) {
       for (let col = 0; col < 6; col++) {
         const value = guesses[row]?.[col];
-        // const result = guessesResults[x]?.[y];
 
         const element = this.shadowRoot?.getElementById(
           `row-${row}-col-${col}`
@@ -128,22 +127,24 @@ export class GameBoard extends HTMLElement {
           element?.appendChild(valueElement);
         }
 
-        // Mark result
+        // Mark results
         if (valueElement && row < currentRow) {
-          const indexInSolution = expectedResult.indexOf(value);
-
-          if (indexInSolution === -1) {
+          // Get current number indexes in solution
+          const indexesInSolution = getAllIndexes(expectedResult, value);
+          // If number is not found in solution
+          if (!indexesInSolution.length) {
             valueElement?.classList.add("value--not-in-solution");
-          }
-
-          if (indexInSolution !== col) {
-            valueElement?.classList.add("value--different-place");
-          }
-
-          if (indexInSolution === col) {
-            valueElement?.classList.add("value--correct");
+          } else {
+            // Number found in proper place
+            if (indexesInSolution.includes(col)) {
+              valueElement?.classList.add("value--correct");
+            } else {
+              // Number found but in another place
+              valueElement?.classList.add("value--different-place");
+            }
           }
         }
+
       }
     }
   }

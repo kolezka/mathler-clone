@@ -2,6 +2,7 @@
 import "./components";
 
 import { GameBoard } from "./components/game-board/GameBoard";
+import { GameHeader } from "./components/game-header/GameHeader";
 import {
   GameKeyboard,
   GameKeyboardEvents,
@@ -11,6 +12,7 @@ import { GameGuesses, LocalStorageKeys } from "./const";
 import { isMathExpression, unsafe_getMathExpressionResult } from "./utils";
 
 export class Mathler {
+  $header: GameHeader;
   $board: GameBoard;
   $keyboard: GameKeyboard;
   $notifications: GameNotifications;
@@ -33,6 +35,7 @@ export class Mathler {
     this.expectedResult = expectedResult;
     this.expectedResultValue = expectedResultValue;
 
+    this.$header = document.querySelector("game-header") as GameHeader;
     this.$board = document.querySelector("game-board") as GameBoard;
     this.$keyboard = document.querySelector("game-keyboard") as GameKeyboard;
     this.$notifications = document.querySelector(
@@ -52,6 +55,8 @@ export class Mathler {
 
     // redraw board
     this.update();
+
+    this.$header.setExpressionValue(String(expectedResultValue));
 
     window.mathler = this;
   }
@@ -100,11 +105,15 @@ export class Mathler {
     if (currentRowExpression === this.expectedResult) {
       // Finish todays game
       // Show stats dialog
+
+      alert("Finish game");
     } else {
       if (this.currentRow < 6) {
         this.currentCol = 0;
         this.currentRow += 1;
       } else {
+        alert("Game fail");
+
         // Game failed
       }
     }

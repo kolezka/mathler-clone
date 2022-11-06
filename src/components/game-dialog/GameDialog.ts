@@ -2,6 +2,16 @@ const template = document.createElement("template");
 
 template.innerHTML = `
   <style>
+    @keyframes appear {
+      0% {
+        transform: scale(.875);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
     :host(:not([open])), :host(:not(:defined)) {
       display: none;
     }
@@ -49,21 +59,38 @@ template.innerHTML = `
       z-index: 100;
       background-color: rgba(0, 0, 0, .25);
     }
+    .wrapper {
+      position: relative;
+      z-index: 101;
+      animation: appear .1s linear forwards;
+    }
   </style>
-  <div id="backdrop"></div>
+  <div id="backdrop"></div>    
+  <div class="wrapper">
   <div class="dialog">
     <div class="dialog-header">
       <h3 class="dialog-title">
         <slot name="dialog-title"></slot>
       </h3>
       <button id="close-button">
-        <svg enable-background="new 0 0 489.8 489.8" version="1.1" viewBox="0 0 489.8 489.8" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
-          <path d="M438.2,0H51.6C23.1,0,0,23.2,0,51.6v386.6c0,28.5,23.2,51.6,51.6,51.6h386.6c28.5,0,51.6-23.2,51.6-51.6V51.6    C489.8,23.2,466.6,0,438.2,0z M465.3,438.2c0,14.9-12.2,27.1-27.1,27.1H51.6c-14.9,0-27.1-12.2-27.1-27.1V51.6    c0-14.9,12.2-27.1,27.1-27.1h386.6c14.9,0,27.1,12.2,27.1,27.1V438.2z"/>
-          <path d="m319 170.8c-4.8-4.8-12.5-4.8-17.3 0l-56.8 56.8-56.8-56.8c-4.8-4.8-12.5-4.8-17.3 0s-4.8 12.5 0 17.3l56.8 56.8-56.8 56.8c-4.8 4.8-4.8 12.5 0 17.3 2.4 2.4 5.5 3.6 8.7 3.6s6.3-1.2 8.7-3.6l56.8-56.8 56.8 56.8c2.4 2.4 5.5 3.6 8.7 3.6s6.3-1.2 8.7-3.6c4.8-4.8 4.8-12.5 0-17.3l-57-56.8 56.8-56.8c4.8-4.8 4.8-12.5 0-17.3z"/>
+        <svg
+          enable-background="new 0 0 489.8 489.8"
+          version="1.1"
+          viewBox="0 0 489.8 489.8"
+          xml:space="preserve"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M438.2,0H51.6C23.1,0,0,23.2,0,51.6v386.6c0,28.5,23.2,51.6,51.6,51.6h386.6c28.5,0,51.6-23.2,51.6-51.6V51.6    C489.8,23.2,466.6,0,438.2,0z M465.3,438.2c0,14.9-12.2,27.1-27.1,27.1H51.6c-14.9,0-27.1-12.2-27.1-27.1V51.6    c0-14.9,12.2-27.1,27.1-27.1h386.6c14.9,0,27.1,12.2,27.1,27.1V438.2z"
+          />
+          <path
+            d="m319 170.8c-4.8-4.8-12.5-4.8-17.3 0l-56.8 56.8-56.8-56.8c-4.8-4.8-12.5-4.8-17.3 0s-4.8 12.5 0 17.3l56.8 56.8-56.8 56.8c-4.8 4.8-4.8 12.5 0 17.3 2.4 2.4 5.5 3.6 8.7 3.6s6.3-1.2 8.7-3.6l56.8-56.8 56.8 56.8c2.4 2.4 5.5 3.6 8.7 3.6s6.3-1.2 8.7-3.6c4.8-4.8 4.8-12.5 0-17.3l-57-56.8 56.8-56.8c4.8-4.8 4.8-12.5 0-17.3z"
+          />
         </svg>
       </button>
     </div>
     <slot class="dialog-body" name="dialog-body"></slot>
+    </div>
   </div>
 `;
 

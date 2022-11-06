@@ -56,7 +56,7 @@ export class GameHeader extends HTMLElement {
     this.attachShadow({ mode: "open" });
   }
 
-  updateExpressionValue(str: string) {
+  setExpressionValue(str: string) {
     const $expressionValue = this.shadowRoot?.getElementById("expressionValue");
     if ($expressionValue) {
       $expressionValue.innerText = str;
