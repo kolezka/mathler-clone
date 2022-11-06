@@ -33,12 +33,14 @@ export class Mathler extends HTMLElement {
 
   constructor() {
     super();
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot?.appendChild(template.content.cloneNode(true));
 
+    /// --- TO DO ----
     this.expectedResult = "8/4+11";
     this.expectedResultValue = 13;
+    ///
 
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.$header = this.shadowRoot?.querySelector("game-header") as GameHeader;
     this.$board = this.shadowRoot?.querySelector("game-board") as GameBoard;
     this.$keyboard = this.shadowRoot?.querySelector(
@@ -48,7 +50,7 @@ export class Mathler extends HTMLElement {
       "game-notifications"
     ) as GameNotifications;
 
-    // Bind event functions
+    // Bind events
     this.onAdd = this.onAdd.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.onEnter = this.onEnter.bind(this);
