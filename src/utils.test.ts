@@ -1,5 +1,6 @@
 import {
   isMathExpression,
+  isNumeric,
   isTheSameDay,
   unsafe_getMathExpressionResult,
 } from "./utils";
@@ -45,5 +46,18 @@ describe("isTheSameDay", () => {
     const x = new Date("2022-11-06T20:02:27.220Z");
     const y = new Date("2001-11-06T20:02:27.220Z");
     expect(isTheSameDay(x, y)).toBe(false);
+  });
+});
+
+describe("isNumeric", () => {
+  it("returns false for words", () => {
+    expect(isNumeric("hello-world")).toBe(false);
+    expect(isNumeric("10,10")).toBe(false);
+  });
+
+  it("return true for numbers", () => {
+    expect(isNumeric("100")).toBe(true);
+    expect(isNumeric("+100")).toBe(true);
+    expect(isNumeric("10.10")).toBe(true);
   });
 });

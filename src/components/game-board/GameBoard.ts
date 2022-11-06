@@ -99,7 +99,6 @@ export class GameBoard extends HTMLElement {
     expectedResult: string;
     currentRow: number;
   }) {
-
     for (let row = 0; row < 6; row++) {
       for (let col = 0; col < 6; col++) {
         const value = guesses[row]?.[col];
@@ -144,7 +143,6 @@ export class GameBoard extends HTMLElement {
             }
           }
         }
-
       }
     }
   }
