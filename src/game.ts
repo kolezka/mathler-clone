@@ -1,6 +1,3 @@
-// Load web components
-import "./components";
-
 import { GameBoard } from "./components/game-board/GameBoard";
 import { GameHeader } from "./components/game-header/GameHeader";
 import {
@@ -11,7 +8,16 @@ import { GameNotifications } from "./components/game-notifications/GameNotificat
 import { GameGuesses, LocalStorageKeys } from "./const";
 import { isMathExpression, unsafe_getMathExpressionResult } from "./utils";
 
-export class Mathler {
+const template = document.createElement("template");
+
+template.innerHTML = `
+  <game-header></game-header>
+  <game-board id="game-board"></game-board>
+  <game-keyboard></game-keyboard>
+  <game-notifications></game-notifications>
+`;
+
+export class Mathler extends HTMLElement {
   $header: GameHeader;
   $board: GameBoard;
   $keyboard: GameKeyboard;
@@ -20,25 +26,25 @@ export class Mathler {
   currentCol = 0;
   currentRow = 0;
 
-  guesses: GameGuesses = [[], [], [], [], [], []]; // The guesses previously picked by player
+  guesses: GameGuesses = [[], [], [], [], [], []];
 
   expectedResult: string;
   expectedResultValue: number;
 
-  constructor({
-    expectedResult,
-    expectedResultValue,
-  }: {
-    expectedResult: string;
-    expectedResultValue: number;
-  }) {
-    this.expectedResult = expectedResult;
-    this.expectedResultValue = expectedResultValue;
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
 
-    this.$header = document.querySelector("game-header") as GameHeader;
-    this.$board = document.querySelector("game-board") as GameBoard;
-    this.$keyboard = document.querySelector("game-keyboard") as GameKeyboard;
-    this.$notifications = document.querySelector(
+    this.expectedResult = "8/4+11";
+    this.expectedResultValue = 13;
+
+    this.$header = this.shadowRoot?.querySelector("game-header") as GameHeader;
+    this.$board = this.shadowRoot?.querySelector("game-board") as GameBoard;
+    this.$keyboard = this.shadowRoot?.querySelector(
+      "game-keyboard"
+    ) as GameKeyboard;
+    this.$notifications = this.shadowRoot?.querySelector(
       "game-notifications"
     ) as GameNotifications;
 
@@ -56,7 +62,7 @@ export class Mathler {
     // redraw board
     this.update();
 
-    this.$header.setExpressionValue(String(expectedResultValue));
+    this.$header.setExpressionValue(String(this.expectedResultValue));
 
     window.mathler = this;
   }
@@ -108,11 +114,17 @@ export class Mathler {
 
       alert("Finish game");
     } else {
-      if (this.currentRow < 6) {
+      console.log(this.currentRow);
+
+      if (this.currentRow < 5) {
+        console.log("here");
+
         this.currentCol = 0;
         this.currentRow += 1;
       } else {
         alert("Game fail");
+
+        this.currentRow += 1;
 
         // Game failed
       }
@@ -152,6 +164,10 @@ export class Mathler {
     );
   }
 
+  saveStatsToLocalStorage() {
+    // localStorage.setItem
+  }
+
   update() {
     this.$board.updateBoard({
       guesses: this.guesses,
@@ -163,7 +179,15 @@ export class Mathler {
   notify(str: string) {
     this.$notifications.addNotification(str);
   }
+
+  onTryAgain() {
+    console.log("hree");
+    // console.log(source);
+    // source.close();
+  }
 }
+
+customElements.define("mathler-game", Mathler);
 
 declare global {
   interface Window {

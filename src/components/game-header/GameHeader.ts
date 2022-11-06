@@ -64,7 +64,9 @@ export class GameHeader extends HTMLElement {
   }
 
   onInfoIconClick() {
-    openDialog(helpDialogTemplate.content.cloneNode(true));
+    openDialog({
+      $content: helpDialogTemplate.content.cloneNode(true),
+    });
   }
 
   connectedCallback() {

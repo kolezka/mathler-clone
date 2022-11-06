@@ -30,9 +30,9 @@ template.innerHTML = `
       overflow: auto;
       margin: 0 auto;
       max-width: 320px;
-      border-radius: 4px;
+      border-radius: var(--game-dialog-border-radius);
       padding: 8px 16px 16px;
-      background-color: var(--game-board-background-color);
+      background-color: var(--game-dialog-background-color);
       z-index: 101;
     }
     .dialog-header {
@@ -42,8 +42,8 @@ template.innerHTML = `
       margin: 0 -8px 8px;
     }
     .dialog-title {
-      font-size: 1rem;
-      color: #000;
+      font-size: var(--game-dialog-title-text-size);
+      color: var(--game-dialog-title-text-color);
       margin: 0;
     }
     .dialog-body {

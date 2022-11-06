@@ -1,5 +1,4 @@
 import {
-  getAllIndexes,
   isMathExpression,
   isNumeric,
   isTheSameDay,
@@ -62,4 +61,3 @@ describe("isNumeric", () => {
     expect(isNumeric("10.10")).toBe(true);
   });
 });
-

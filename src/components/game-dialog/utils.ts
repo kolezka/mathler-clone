@@ -1,13 +1,19 @@
 import { DialogEvents, GameDialog } from "./GameDialog";
 
-export function openDialog<T extends GameDialog>(
-  $content: Node,
+interface IOpenDialogConfig<T extends GameDialog> {
+  $content?: Node; // | (($dialog: T) => void);
+  $container?: HTMLElement;
+  initialize?: () => T;
+}
+
+export function openDialog<T extends GameDialog>({
+  $content,
   $container = document.body,
-  initialize: () => T = () => new GameDialog() as T
-) {
+  initialize = () => new GameDialog() as T,
+}: IOpenDialogConfig<T>) {
   const $dialog = initialize();
 
-  if ($content !== null) {
+  if ($content) {
     $dialog.appendChild($content);
   }
 
