@@ -1,9 +1,11 @@
 ![](./screenshoots/1.png)
 
 # Mathler Copy
-Please take into account that I still work in this repository. It is a copy of the game "Mathler", which is a mathematical variation of the game "wordle". My main goal is to create an application without using third-party libraries, which will take up as little space as possible, while having a lot of fun. 
+
+Please take into account that I still work in this repository. It is a copy of the game "Mathler", which is a mathematical variation of the game "wordle". My main goal is to create an application without using third-party libraries, which will take up as little space as possible, while having a lot of fun.
 
 ## Installing & Running
+
 ```
  npm install
  npm run build
@@ -13,6 +15,7 @@ Please take into account that I still work in this repository. It is a copy of t
 ## Implementation
 
 1. The mathler copy uses several CSS variables. Copy them to your CSS file.
+
 ```
   /* Header */
   --game-header-button-color: #989482;
@@ -55,10 +58,12 @@ Please take into account that I still work in this repository. It is a copy of t
   --game-dialog-button-background-color: #989482;
   --game-dialog-button-hover-background-color: #bfb9a3;
 ```
+
 2. Include builded javascript file in your apps `<head>`
 3. Add `<math-game>` tag to your HTML.
 
 ## Next steps
+
 - [ ] Requesting different solution each day
 - [ ] Player stats
 - [ ] E2E tests
@@ -67,4 +72,5 @@ Please take into account that I still work in this repository. It is a copy of t
 - [ ] Bundle size reduction (DRY remove)
 
 ## License
+
 MIT 2022 Mariusz Rakus (kolezka)
