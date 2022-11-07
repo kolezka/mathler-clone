@@ -48,16 +48,12 @@
   --game-dialog-background-color: #bfb9a3;
   --game-dialog-border-radius: var(--border-radius);
 
+  --game-dialog-button-radius: var(--border-radius);
   --game-dialog-button-text-color: #fff;
+  --game-dialog-button-text-size: 0.875rem;
   --game-dialog-button-background-color: #989482;
   --game-dialog-button-hover-background-color: #bfb9a3;
 }
-
-/* @media (prefers-color-scheme: light) {
-  :root {
-
-  }
-} */
 
 body {
   font-size: 1rem;

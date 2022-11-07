@@ -7,12 +7,7 @@ const mathRegex = new RegExp(
 );
 
 export function isMathExpression(str: string) {
-  if (
-    str.startsWith("-") ||
-    str.startsWith("+") ||
-    str.startsWith("*") ||
-    str.startsWith("/")
-  )
+  if (str.startsWith("+") || str.startsWith("*") || str.startsWith("/"))
     return false;
   if (!/(\+|\-|\*|\/)/g.test(str)) return false;
   return mathRegex.test(str);

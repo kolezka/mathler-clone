@@ -48,6 +48,7 @@ export class FailDialog extends GameDialog {
     if ($mathler) {
       $mathler.onTryAgain();
     }
+    this.close();
   }
 
   addEventListeners() {

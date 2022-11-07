@@ -1,4 +1,9 @@
+import { FailDialog } from "./components/dialogs/fail-dialog/FailDialog";
+import {
+  SuccessDialog,
+} from "./components/dialogs/success-dialog/SuccessDialog";
 import { GameBoard } from "./components/game-board/GameBoard";
+import { openDialog } from "./components/game-dialog/utils";
 import { GameHeader } from "./components/game-header/GameHeader";
 import {
   GameKeyboard,
@@ -30,6 +35,8 @@ export class Mathler extends HTMLElement {
 
   expectedResult: string;
   expectedResultValue: number;
+
+  finishGame = false;
 
   constructor() {
     super();
@@ -70,21 +77,33 @@ export class Mathler extends HTMLElement {
   }
 
   onAdd(e: Event) {
+    if (this.finishGame) return;
     const { detail } = e as CustomEvent;
+
     if (this.currentCol >= 6) return;
+
     this.guesses[this.currentRow][this.currentCol] = detail;
+
     this.currentCol += 1;
     this.update();
   }
 
   onDelete() {
+    if (this.finishGame) return;
     if (!this.currentCol) return;
     delete this.guesses[this.currentRow][this.currentCol - 1];
     this.currentCol -= 1;
     this.update();
   }
 
+  validateCurrentRowResult() {
+    const currentRowExpression = this.guesses[this.currentRow].join("");
+    return currentRowExpression === this.expectedResult;
+  }
+
   onEnter() {
+    if (this.finishGame) return;
+
     const currentRowExpression = this.guesses[this.currentRow].join("");
 
     if (currentRowExpression.length < 6) {
@@ -111,29 +130,40 @@ export class Mathler extends HTMLElement {
 
     // Check if current row guess is correct one
     if (currentRowExpression === this.expectedResult) {
-      // Finish todays game
-      // Show stats dialog
-
-      alert("Finish game");
+      // Finish game
+      this.currentRow += 1;
+      this.showFinishGameDialog();
+      this.finishGame = true;
     } else {
-      console.log(this.currentRow);
-
       if (this.currentRow < 5) {
-        console.log("here");
-
+        // Go to next row
         this.currentCol = 0;
         this.currentRow += 1;
       } else {
-        alert("Game fail");
-
+        // Game fail
         this.currentRow += 1;
-
-        // Game failed
+        this.showFailGameDialog();
+        this.finishGame = true;
       }
     }
 
     this.saveStateToLocalStorage();
     this.update();
+  }
+
+  reset() {
+    this.finishGame = false;
+
+    this.guesses = [[], [], [], [], [], []];
+    this.currentCol = 0;
+    this.currentRow = 0;
+
+    this.update();
+    this.saveStateToLocalStorage();
+  }
+
+  onTryAgain() {
+    this.reset();
   }
 
   attachEvents() {
@@ -147,14 +177,23 @@ export class Mathler extends HTMLElement {
       const dirtyStoredGuesses = localStorage.getItem(LocalStorageKeys.GUESSES);
       if (dirtyStoredGuesses) {
         const storedGuesses = JSON.parse(dirtyStoredGuesses) as GameGuesses;
-        this.guesses = storedGuesses;
 
+        this.guesses = storedGuesses;
         this.currentRow = storedGuesses.reduce((val, guess) => {
           if (guess.length) {
             return val + 1;
           }
           return val;
         }, 0);
+
+        // Check if the game is finished
+        if (this.currentRow) {
+          const lastGuess = this.guesses[this.currentRow - 1].join("");
+          if (lastGuess === this.expectedResult) {
+            this.finishGame = true;
+            this.showFinishGameDialog();
+          }
+        }
       }
     } catch {}
   }
@@ -167,10 +206,12 @@ export class Mathler extends HTMLElement {
   }
 
   saveStatsToLocalStorage() {
-    // localStorage.setItem
+    // TODO
   }
 
   update() {
+    console.log(this.guesses, this.expectedResult, this.currentRow);
+
     this.$board.updateBoard({
       guesses: this.guesses,
       expectedResult: this.expectedResult,
@@ -182,10 +223,16 @@ export class Mathler extends HTMLElement {
     this.$notifications.addNotification(str);
   }
 
-  onTryAgain() {
-    console.log("hree");
-    // console.log(source);
-    // source.close();
+  showFailGameDialog() {
+    openDialog({
+      initialize: () => new FailDialog(),
+    });
+  }
+
+  showFinishGameDialog() {
+    openDialog({
+      initialize: () => new SuccessDialog(),
+    });
   }
 }
 

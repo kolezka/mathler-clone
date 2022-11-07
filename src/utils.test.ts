@@ -27,12 +27,9 @@ describe("isMathExpression", () => {
   );
 
   // We do not allow expression which starts with plus/minus, or numbers without math signals
-  it.each(["-2+2", "+2+2", "100000"])(
-    "%s validates correctly",
-    (expression) => {
-      expect(isMathExpression(expression)).toBe(false);
-    }
-  );
+  it.each(["+2+2", "100000"])("%s validates correctly", (expression) => {
+    expect(isMathExpression(expression)).toBe(false);
+  });
 });
 
 describe("isTheSameDay", () => {
