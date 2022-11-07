@@ -210,8 +210,6 @@ export class Mathler extends HTMLElement {
   }
 
   update() {
-    console.log(this.guesses, this.expectedResult, this.currentRow);
-
     this.$board.updateBoard({
       guesses: this.guesses,
       expectedResult: this.expectedResult,
