@@ -1,4 +1,12 @@
 describe('Game Board', () => {
+  it('is updated when player uses DOM keyboard', () => {
+    cy.visit('http://localhost:5173')
+    const buttons = ['1', '0', '0', '-', '8', '7', 'Enter']
+    for (const button of buttons) {
+      cy.get('mathler-game').shadow().find('game-keyboard').find('button').contains(button).click();
+    }
+    cy.get('mathler-game').shadow().find('#row-0').should('have.text', '100-87');
+  })
   it('is updated when player uses keyboard', () => {
     cy.visit('http://localhost:5173')
     const type = '100-87'
