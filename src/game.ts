@@ -173,8 +173,11 @@ export class Mathler extends HTMLElement {
   readLocalStorageState() {
     try {
       const dirtyStoredGuesses = localStorage.getItem(LocalStorageKeys.GUESSES);
+
       if (dirtyStoredGuesses) {
         const storedGuesses = JSON.parse(dirtyStoredGuesses) as GameGuesses;
+
+        console.log(storedGuesses);
 
         this.guesses = storedGuesses;
         this.currentRow = storedGuesses.reduce((val, guess) => {
