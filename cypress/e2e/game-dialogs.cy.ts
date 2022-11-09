@@ -21,7 +21,7 @@ describe('Game', () => {
     $tryAgainButton.click();
     $failDialog.should('not.exist')
   });
-  it.only('shows help dialog', () => {
+  it('shows help dialog', () => {
     cy.visit('http://localhost:5173')
     cy.get('mathler-game').shadow().find('#help-button').click();
     cy.get('game-dialog').contains('How to play?')
