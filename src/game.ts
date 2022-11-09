@@ -15,7 +15,7 @@ const template = document.createElement("template");
 
 template.innerHTML = `
   <game-header></game-header>
-  <game-board id="game-board"></game-board>
+  <game-board></game-board>
   <game-keyboard></game-keyboard>
   <game-notifications></game-notifications>
 `;
@@ -176,8 +176,6 @@ export class Mathler extends HTMLElement {
 
       if (dirtyStoredGuesses) {
         const storedGuesses = JSON.parse(dirtyStoredGuesses) as GameGuesses;
-
-        console.log(storedGuesses);
 
         this.guesses = storedGuesses;
         this.currentRow = storedGuesses.reduce((val, guess) => {
