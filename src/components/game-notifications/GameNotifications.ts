@@ -64,6 +64,7 @@ export class GameNotifications extends HTMLElement {
   addNotification(str: string) {
     const notification = document.createElement("div");
     notification.innerText = str;
+    console.log(notification.innerText);
     notification.classList.add("notification");
     this.shadowRoot?.appendChild(notification);
     setTimeout(() => {

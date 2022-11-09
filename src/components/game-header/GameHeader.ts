@@ -1,5 +1,5 @@
 import { helpDialogTemplate } from "../dialogs/help-dialog/HelpDialog";
-import { openDialog } from "../game-dialog/utils";
+import { openDialog } from "../game-dialog/openDialog";
 
 const template = document.createElement("template");
 

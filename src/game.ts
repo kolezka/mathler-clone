@@ -1,7 +1,7 @@
 import { FailDialog } from "./components/dialogs/fail-dialog/FailDialog";
 import { SuccessDialog } from "./components/dialogs/success-dialog/SuccessDialog";
 import { GameBoard } from "./components/game-board/GameBoard";
-import { openDialog } from "./components/game-dialog/utils";
+import { openDialog } from "./components/game-dialog/openDialog";
 import { GameHeader } from "./components/game-header/GameHeader";
 import {
   GameKeyboard,
