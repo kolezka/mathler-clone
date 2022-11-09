@@ -1,6 +1,7 @@
 describe('Game', () => {
   it('shows success dialog at the end', () => {
-    cy.visit('http://localhost:5173')
+    cy.visit('/')
+
     cy.get('body').type('8/4+11').type('{Enter}')
     const $successDialog = cy.get('success-dialog');
     $successDialog.should('exist');
@@ -10,7 +11,8 @@ describe('Game', () => {
     $successDialog.should('not.exist')
   });
   it('shows fail dialog', () => {
-    cy.visit('http://localhost:5173')
+    cy.visit('/')
+
     for (let i = 0; i < 6; i++) {
       cy.get('body').type('100-87').type('{Enter}')
     }
@@ -22,7 +24,8 @@ describe('Game', () => {
     $failDialog.should('not.exist')
   });
   it('shows help dialog', () => {
-    cy.visit('http://localhost:5173')
+    cy.visit('/')
+
     cy.get('mathler-game').shadow().find('#help-button').click();
     cy.get('game-dialog').contains('How to play?')
     cy.get('game-dialog').contains('Try to find the hidden calculation in 6 guesses!')
